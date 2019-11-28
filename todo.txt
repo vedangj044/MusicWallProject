@@ -1,0 +1,8 @@
+create gitignore add api token to it.
+get application token
+configure the auth2.0
+acess the alpine
+connect the html page
+create the music play configue
+create the api_token database
+connect views to trigger refresh
