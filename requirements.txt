@@ -1,2 +1,6 @@
 Django>=2.2.7,<2.3.0
 flake8>=3.7.9,<3.8.0
+google-api-python-client
+google-auth-oauthlib
+google-auth-httplib2
+google-auth
