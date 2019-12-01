@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
-from django.urls import reverse
-from urllib.parse import urlencode
+import callAPI
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
 
@@ -26,8 +25,6 @@ def exchangeToken(request):
     flow.redirect_uri = 'https://localhost:8080/auth'
 
     authorization_response = request.build_absolute_uri()
-    print("hello")
-    print(authorization_response)
     flow.fetch_token(authorization_response=authorization_response)
 
     credentials = flow.credentials
@@ -38,5 +35,11 @@ def exchangeToken(request):
         'client_id': credentials.client_id,
         'client_secret': credentials.client_secret,
         'scopes': credentials.scopes}
+
+    print(callAPI.Youtube(credentials))
+
+    return render(request, 'auth.html')
+
+def main(request, nameID):
 
     return render(request, 'auth.html')
