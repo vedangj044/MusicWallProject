@@ -4,21 +4,28 @@ from urllib.parse import urlencode
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
 
-flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
-'client_secret.json',
-scopes=['https://www.googleapis.com/auth/youtube.force-ssl'],)
-
-flow.redirect_uri = 'http://localhost:8080/auth'
 
 # Create your views here.
 def getToken(request):
+    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
+    'client_secret.json',
+    scopes=['https://www.googleapis.com/auth/youtube.force-ssl'],)
+
+    flow.redirect_uri = 'https://localhost:8080/auth'
+
     authorization_url, state = flow.authorization_url(access_type="offline",
     include_granted_scopes="true")
 
     return redirect(authorization_url)
 
 def exchangeToken(request):
-    authorization_response = request.GET.get('code')
+    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
+    'client_secret.json',
+    scopes=['https://www.googleapis.com/auth/youtube.force-ssl'],)
+
+    flow.redirect_uri = 'https://localhost:8080/auth'
+
+    authorization_response = request.build_absolute_uri()
     print("hello")
     print(authorization_response)
     flow.fetch_token(authorization_response=authorization_response)
