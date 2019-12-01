@@ -1,16 +1,20 @@
 from django.shortcuts import render, redirect
 import callAPI
+import os
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
 
 
 # Create your views here.
 def getToken(request):
+    os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
+
     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
     'client_secret.json',
-    scopes=['https://www.googleapis.com/auth/youtube.force-ssl'],)
+    scopes=['https://www.googleapis.com/auth/youtube.force-ssl',
+            'https://www.googleapis.com/auth/userinfo.profile',],)
 
-    flow.redirect_uri = 'https://localhost:8080/auth'
+    flow.redirect_uri = 'http://localhost:8080/auth'
 
     authorization_url, state = flow.authorization_url(access_type="offline",
     include_granted_scopes="true")
@@ -18,11 +22,14 @@ def getToken(request):
     return redirect(authorization_url)
 
 def exchangeToken(request):
+    os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
+
     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
     'client_secret.json',
-    scopes=['https://www.googleapis.com/auth/youtube.force-ssl'],)
+    scopes=['https://www.googleapis.com/auth/youtube.force-ssl',
+            'https://www.googleapis.com/auth/userinfo.profile',],)
 
-    flow.redirect_uri = 'https://localhost:8080/auth'
+    flow.redirect_uri = 'http://localhost:8080/auth'
 
     authorization_response = request.build_absolute_uri()
     flow.fetch_token(authorization_response=authorization_response)
@@ -37,7 +44,7 @@ def exchangeToken(request):
         'scopes': credentials.scopes}
 
     print(callAPI.Youtube(credentials))
-
+    print(callAPI.userInfo(credentials))
     return render(request, 'auth.html')
 
 def main(request, nameID):

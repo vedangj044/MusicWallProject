@@ -1,4 +1,5 @@
 from googleapiclient.discovery import build
+import requests
 
 def Youtube(credentials1):
     finalList = []
@@ -19,3 +20,10 @@ def Youtube(credentials1):
                                     pageToken=resp["nextPageToken"]).execute()
 
     return finalList
+
+
+def userInfo(credentials):
+    #url = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json"
+    url = "https://www.googleapis.com/oauth2/v1/userinfo?access_token="+str(credentials.token)
+    resp = requests.get(url)
+    print(resp.text)
