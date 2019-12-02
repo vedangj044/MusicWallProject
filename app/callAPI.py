@@ -26,7 +26,7 @@ def Youtube(credentials1):
 
 def userInfo(credentials):
     # url = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json"
-    url = "https://www.googleapis.com/oauth2/v1/userinfo?access_token="+
-    str(credentials.token)
+    url1 = "https://www.googleapis.com/oauth2/v1/userinfo?access_token="
+    url = url1+str(credentials.token)
     resp = requests.get(url)
     print(resp.text)
