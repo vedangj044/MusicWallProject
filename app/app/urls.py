@@ -19,6 +19,7 @@ from user import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('create', views.CreateNew, name='Create')
     path('', views.getToken, name='Auth'),
     path('auth', views.exchangeToken, name='Exchange'),
 ]

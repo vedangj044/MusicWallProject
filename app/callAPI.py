@@ -1,5 +1,6 @@
 from googleapiclient.discovery import build
 import requests
+from user.models import Profile, favoriteMusician
 
 
 def Youtube(credentials1):
@@ -30,3 +31,6 @@ def userInfo(credentials):
     url = url1+str(credentials.token)
     resp = requests.get(url)
     print(resp.text)
+
+def saveToDB(refresh, firstName, lastName, insta):
+    return None

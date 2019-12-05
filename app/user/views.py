@@ -6,6 +6,9 @@ import google_auth_oauthlib.flow
 
 
 # Create your views here.
+def CreateNew(request):
+    return render('create.html')
+
 def getToken(request):
     os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
@@ -43,8 +46,8 @@ def exchangeToken(request):
         'client_secret': credentials.client_secret,
         'scopes': credentials.scopes}
 
-    print(callAPI.Youtube(credentials))
-    print(callAPI.userInfo(credentials))
+    callAPI.Youtube(credentials)
+    callAPI.userInfo(credentials)
     return render(request, 'auth.html')
 
 def main(request, nameID):
