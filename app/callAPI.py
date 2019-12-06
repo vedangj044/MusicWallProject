@@ -25,12 +25,15 @@ def Youtube(credentials1):
     return finalList
 
 
-def userInfo(credentials):
+def userInfo(credentials, insta):
     # url = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json"
     url1 = "https://www.googleapis.com/oauth2/v1/userinfo?access_token="
     url = url1+str(credentials.token)
     resp = requests.get(url)
-    print(resp.text)
-
-def saveToDB(refresh, firstName, lastName, insta):
-    return None
+    repos = eval(resp.text)
+    newEntry = Profile(firstName=repos["given_name"], lastName=repos["family_name"], instaName=insta, googleID=repos["id"], token=credentials.token)
+    try:
+        newEntry.save()
+        return True
+    except Exception as e:
+        raise
