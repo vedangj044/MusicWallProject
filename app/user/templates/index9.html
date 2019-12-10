@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Music WALL</title>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+    .flex-container {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .flex-container > iframe {
+      border-bottom: 1px solid lightgrey;
+      border-top: 1px solid lightgrey;
+    }
+    body{
+      margin-bottom:0px;
+    }
+    </style>
+
+  </head>
+
+
+  <body>
+
+    <main>
+    <div class="parallax-container">
+      <div class="parallax">
+        <img src="prateek.jpg">
+      </div>
+    </div>
+    <br>
+    <div class="container">
+    <h1>My Music Wall</h1>
+    </div>
+    <div class="flex-container container row" id="initial0">
+      <img class="col s12 m6 l4" src="" width="500px" height="400px"/>
+    </div>
+    <div class="parallax-container">
+      <div class="parallax">
+        <img src="ar.jpg">
+      </div>
+    </div>
+    <br>
+    <div class="flex-container container row" id="initial1">
+    </div>
+    <div class="parallax-container">
+      <div class="parallax">
+        <img src="ritviz.jpg">
+      </div>
+    </div>
+    <br>
+    <div class="flex-container container row" id="initial2">
+    </div>
+    <div class="grey lighten-3" style="position:fixed;bottom:0px;width:100%">
+      <div class="container">
+        <iframe width="100px" height="50px" src="https://www.youtube.com/embed/watch?v=PtdaJ2DENds" style="float:left;margin:10px;"> Video</iframe>
+        <h3> Music PLayer</h3>
+      </div>
+    </div>
+  </main>
+    <div class="footer-copyright" style="margin-bottom:0px;">
+      <div class="container">
+        <h5>Made by <a heaf="#"> Vedang</a> with <i class="material-icons ">favorite</i></h5>
+      </div>
+    </div>
+  </body>
+
+<script type="text/javascript" src="js/materialize.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var elems = document.querySelectorAll('.parallax');
+  var instances = M.Parallax.init(elems, {});
+});
+</script>
+
+</html>

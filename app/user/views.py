@@ -67,14 +67,15 @@ def exchangeToken(request):
 def main(request):
     a = request.path
     a = a[1:len(a)-1]
-    token = Profile.objects.filter(instaName__exact=a)[0].token
-
+    b = Profile.objects.filter(instaName__exact=a)[0]
+    token = b.token
     cred1 = open("client_secret.json", "r")
     c = eval(cred1.read())["web"]
     credentials = Cred.Credentials(token=None, refresh_token=token, token_uri=c["token_uri"], client_id=c["client_id"], client_secret=c["client_secret"])
     request1 = google.auth.transport.requests.Request()
     credentials.refresh(request1)
-
+    b.token = credentials.token
+    b.save()
     l = callAPI.Youtube(credentials)
     print(l)
     return render(request, 'basic.html', {"l": l})
