@@ -8,6 +8,9 @@
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
 
+    <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    </head>
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <style>
@@ -22,6 +25,13 @@
     }
     body{
       margin-bottom:0px;
+    }
+    .pointChange{
+      cursor: pointer;
+    }
+    .active1{
+      background-color: grey;
+      box-shadow: 0 5px #666;
     }
     </style>
 
@@ -59,11 +69,24 @@
     <br>
     <div class="flex-container container row" id="initial2">
     </div>
-    <div class="grey lighten-3" style="position:fixed;bottom:0px;width:100%">
-      <div class="container">
-        <iframe width="100px" height="50px" src="https://www.youtube.com/embed/watch?v=PtdaJ2DENds" style="float:left;margin:10px;"> Video</iframe>
-        <h3> Music PLayer</h3>
+    <div class="grey lighten-3" style="position:fixed;bottom:0px;right:0px;">
+      <div class="container" id="queued">
       </div>
+      <div class="container">
+        <div id="player" width="200px" height="200px" style="margin:5px;"></div>
+        <div style="display:block;">
+          <i class="material-icons medium pointChange" id="navigate_before"> navigate_before </i>
+          <i class="material-icons medium pointChange" id="play_circle_filled"> play_circle_filled </i>
+          <i class="material-icons medium pointChange" id="navigate_next"> navigate_next </i>
+        </div>
+        <h2>Song Name</h2>
+        <div style="display:block;">
+          <i class="material-icons medium pointChange" id="shuffle"> shuffle </i>
+          <i class="material-icons medium pointChange" id="repeat"> repeat </i>
+          <i class="material-icons medium pointChange" id="queue_music"> queue_music </i>
+        </div>
+      </div>
+
     </div>
   </main>
     <div class="footer-copyright" style="margin-bottom:0px;">
@@ -80,5 +103,120 @@ document.addEventListener('DOMContentLoaded', function() {
   var instances = M.Parallax.init(elems, {});
 });
 </script>
+<script>
+
+</script>
+<script>
+  // 2. This code loads the IFrame Player API code asynchronously.
+  var tag = document.createElement('script');
+
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  // 3. This function creates an <iframe> (and YouTube player)
+  //    after the API code downloads.
+  var player;
+  var playlistUser = ['M7lc1UVf-VE', 'vt4jX0iRgCg', 'R3Ed4zvQ0Hs', 'jEBjssweBpQ'];
+  var repeat_one = false;
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+      height: '200',
+      width: '200',
+      playerVars: {
+            controls: 0,
+            disablekb: 1
+        },
+      events: {
+        'onReady': onPlayerReady,
+        'onStateChange': onPlayerStateChange
+      }
+    });
+  }
+
+  function onPlayerReady(event) {
+    player.cuePlaylist({
+      listType: 'playlist',
+      list: playlistUser,
+    });
+    queueUp();
+  }
+
+  function onPlayerStateChange(event) {
+    if (event.data == YT.PlayerState.PLAYING) {
+      document.getElementById('play_circle_filled').innerHTML = "pause";
+    }
+    if (event.data == YT.PlayerState.PAUSED) {
+      document.getElementById('play_circle_filled').innerHTML = "play_circle_filled";
+    }
+
+    if (event.data == YT.PlayerState.ENDED && repeat_one) {
+      player.seekTo(0);
+      player.playVideo();
+    }
+  }
+
+  function queueUp(){
+    for(var i=0; i<playlistUser.length; i++){
+      var e = document.createElement('div')
+      e.innerHTML = playlistUser[i];
+      document.getElementById('queued').appendChild(e);
+    }
+  }
+
+  $(document).ready(function(){
+    $("#queued").hide();
+
+    $("#play_circle_filled").click(function(){
+      if($(this).text() === "play_circle_filled"){
+        $(this).text("pause");
+        player.playVideo();
+      }
+      else{
+        $(this).text("play_circle_filled");
+        player.pauseVideo();
+      }
+    });
+    $("#navigate_next").click(function(){
+      player.nextVideo();
+    });
+    $("#navigate_before").click(function(){
+      player.previousVideo();
+    });
+    $('#shuffle').click(function(){
+      if($(this).hasClass("active1")){
+        player.setShuffle(false);
+        $(this).removeClass("active1");
+      }
+      else{
+        player.setShuffle(true);
+        $(this).addClass("active1");
+      }
+    });
+
+    var timesRepeat = 0;
+    $("#repeat").click(function(){
+      if(timesRepeat===0){
+        $(this).addClass("active1");
+        player.setLoop(true);
+        timesRepeat+=1;
+      } else if(timesRepeat===1){
+        $(this).text("repeat_one");
+        repeat_one = true;
+        timesRepeat+=1;
+      } else if(timesRepeat===2){
+        $(this).removeClass("active1");
+        $(this).text("repeat");
+        timesRepeat=0;
+        repeat_one=false;
+      }
+    });
+
+    $("#queue_music").click(function(){
+      $("#queued").toggle();
+    });
+  });
+</script>
+
 
 </html>
